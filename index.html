@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYLINE RP - Official Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --bg-dark: #020617;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #020617);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #f1f5f9;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-field {
+            background: rgba(2, 6, 23, 0.4) !important;
+            border: 1px solid rgba(71, 85, 105, 0.3) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-field:focus {
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 4px var(--primary-glow) !important;
+            background: rgba(2, 6, 23, 0.6) !important;
+        }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .section-card:hover {
+            border-color: rgba(59, 130, 246, 0.2);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .btn-gradient:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
+        }
+
+        .btn-gradient:active {
+            transform: translateY(1px);
+        }
+
+        /* Fullscreen scroll fix */
+        .app-container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 1rem;
+        }
+
+        /* Logo Area Styling */
+        .logo-area {
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            filter: drop-shadow(0 0 15px var(--primary-glow));
+            transition: transform 0.5s ease;
+        }
+        
+        .logo-area:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <div class="w-full max-w-5xl glass-panel rounded-[2.5rem] p-8 md:p-16 animate-fade-in">
+            
+            <!-- Logo Section -->
+            <div class="logo-area">
+                <img src="https://media.discordapp.net/attachments/1442517496275009597/1454131605403603155/SOUTH_4.png?ex=6950a1d7&is=694f5057&hm=1bb9210537f118c10dc14ed703715684a0f6757c6678a3b30d683d4f9eaadb5b&format=webp&quality=lossless&width=1200&height=1200&" alt="Skyline RP Logo" class="logo-image">
+            </div>
+
+            <!-- Header -->
+            <header class="text-center mb-16">
+                <div class="inline-block px-5 py-2 mb-6 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold tracking-[0.3em] uppercase">
+                    Official Whitelist Portal
+                </div>
+                <h1 class="text-6xl md:text-7xl font-black text-white mb-4 tracking-tighter">
+                    SKYLINE <span class="text-blue-500 glow-text">RP</span>
+                </h1>
+                <p class="text-gray-400 text-xl font-light max-w-2xl mx-auto">Build your legacy in the most advanced roleplay environment.</p>
+            </header>
+
+            <form id="rpForm" class="space-y-10">
+                <!-- Basic Section -->
+                <div class="section-card rounded-3xl p-8 md:p-10 space-y-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="h-10 w-1.5 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
+                        <h2 class="text-2xl font-bold text-white tracking-wide">Personal Information</h2>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-300 ml-1">Email Address <span class="text-blue-500">*</span></label>
+                        <input type="email" name="email" required placeholder="example@email.com" class="input-field w-full rounded-2xl p-5 outline-none text-white text-lg">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.1 Full Name (Real) <span class="text-blue-500">*</span></label>
+                            <input type="text" name="full_name" required placeholder="Your Name" class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.2 Date of Birth <span class="text-blue-500">*</span></label>
+                            <input type="date" name="dob" required class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-300 ml-1">1.3 Country and Time Zone <span class="text-blue-500">*</span></label>
+                        <input type="text" name="timezone" required placeholder="Sri Lanka (GMT+5:30)" class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                    </div>
+                </div>
+
+                <!-- Gaming Identities -->
+                <div class="section-card rounded-3xl p-8 md:p-10 space-y-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="h-10 w-1.5 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
+                        <h2 class="text-2xl font-bold text-white tracking-wide">Gaming & Social Presence</h2>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-300 ml-1">1.4 Steam Profile URL <span class="text-blue-500">*</span></label>
+                        <input type="url" name="steam_link" required placeholder="https://steamcommunity.com/id/yourname" class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.5 Steam Profile Name <span class="text-blue-500">*</span></label>
+                            <input type="text" name="steam_name" required class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.6 Steam Hex ID <span class="text-blue-500">*</span></label>
+                            <input type="text" name="steam_hex" required placeholder="steam:1100001xxxxxxxx" class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.9 Discord Username <span class="text-blue-500">*</span></label>
+                            <input type="text" name="discord_user" placeholder="username#0000" required class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.10 Discord User ID <span class="text-blue-500">*</span></label>
+                            <input type="text" name="discord_id" placeholder="18-digit ID" required class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <label class="block text-sm font-semibold text-gray-300 ml-1">1.7 Social Media / FB Link</label>
+                        <input type="url" name="social_link" placeholder="https://facebook.com/..." class="input-field w-full rounded-2xl p-5 outline-none text-lg">
+                    </div>
+                </div>
+
+                <!-- Rules & Exp -->
+                <div class="section-card rounded-3xl p-8 md:p-10 space-y-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="h-10 w-1.5 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.8)]"></div>
+                        <h2 class="text-2xl font-bold text-white tracking-wide">Experience & Compliance</h2>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.13 Previous Role-play Experience? <span class="text-blue-500">*</span></label>
+                            <select name="rp_exp" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Yes">Yes, I have experience</option>
+                                <option value="No">No, I am a beginner</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.14 Read the Region City Rule Book? <span class="text-blue-500">*</span></label>
+                            <select name="rules_read" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Yes">Yes, I have read everything</option>
+                                <option value="No">No, not yet</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="block text-sm font-semibold text-gray-300 ml-1">1.15 Agree to Server Guidelines? <span class="text-blue-500">*</span></label>
+                            <select name="agree" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Yes">I Agree & Will Comply</option>
+                                <option value="No">I Do Not Agree</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="pt-8">
+                    <button type="submit" id="submitBtn" class="btn-gradient w-full py-6 rounded-[2rem] text-white font-black text-xl tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-4">
+                        <span id="btnText">Submit Application</span>
+                    </button>
+                </div>
+            </form>
+
+            <div id="status" class="hidden mt-10 p-6 rounded-3xl text-center font-bold border animate-fade-in text-lg"></div>
+
+            <footer class="mt-20 text-center border-t border-white/5 pt-10">
+                <p class="text-gray-500 text-sm tracking-widest font-medium uppercase">&copy; 2024 SKYLINE RP • Official Application Portal</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // backend URL configuration
+        const BACKEND_URL = 'https://bbf60a2f-e8d7-4698-80a2-8b80c51208a9-00-omlkgumudbwh.sisko.replit.dev'; 
+
+        document.getElementById('rpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const status = document.getElementById('status');
+            const formData = new FormData(e.target);
+            
+            btn.disabled = true;
+            btnText.innerText = 'PROCESSING...';
+            status.classList.add('hidden');
+
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch(BACKEND_URL + '/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    status.innerText = "Application Received Successfully! Please check Discord for updates.";
+                    status.className = "mt-10 p-6 rounded-3xl text-green-400 bg-green-500/10 border-green-500/20 block animate-fade-in";
+                    e.target.reset();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    throw new Error("Submission failed");
+                }
+            } catch (err) {
+                status.innerText = "Connection Error: Please check your internet or try again later.";
+                status.className = "mt-10 p-6 rounded-3xl text-red-400 bg-red-500/10 border-red-500/20 block animate-fade-in";
+            } finally {
+                btn.disabled = false;
+                btnText.innerText = 'Submit Application';
+            }
+        });
+    </script>
+</body>
+</html>
