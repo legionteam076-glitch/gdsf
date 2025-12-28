@@ -36,6 +36,7 @@
             background: rgba(2, 6, 23, 0.4) !important;
             border: 1px solid rgba(71, 85, 105, 0.3) !important;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white !important;
         }
 
         .input-field:focus {
@@ -70,11 +71,11 @@
             box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5);
         }
 
-        .btn-gradient:active {
-            transform: translateY(1px);
+        .btn-gradient:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
-        /* Fullscreen scroll fix */
         .app-container {
             width: 100%;
             min-height: 100vh;
@@ -84,7 +85,6 @@
             padding: 2rem 1rem;
         }
 
-        /* Logo Area Styling */
         .logo-area {
             width: 180px;
             height: 180px;
@@ -94,11 +94,6 @@
             justify-content: center;
             position: relative;
             filter: drop-shadow(0 0 15px var(--primary-glow));
-            transition: transform 0.5s ease;
-        }
-        
-        .logo-area:hover {
-            transform: scale(1.05);
         }
 
         .logo-image {
@@ -107,12 +102,6 @@
             object-fit: contain;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #020617; }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -120,6 +109,11 @@
 
         .animate-fade-in {
             animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        
+        select option {
+            background-color: #0f172a;
+            color: white;
         }
     </style>
 </head>
@@ -143,6 +137,9 @@
                 </h1>
                 <p class="text-gray-400 text-xl font-light max-w-2xl mx-auto">Build your legacy in the most advanced roleplay environment.</p>
             </header>
+
+            <!-- Status Message Box -->
+            <div id="status" class="hidden mb-10 p-6 rounded-3xl text-center font-bold border animate-fade-in text-lg"></div>
 
             <form id="rpForm" class="space-y-10">
                 <!-- Basic Section -->
@@ -224,7 +221,7 @@
                     <div class="space-y-8">
                         <div class="space-y-3">
                             <label class="block text-sm font-semibold text-gray-300 ml-1">1.13 Previous Role-play Experience? <span class="text-blue-500">*</span></label>
-                            <select name="rp_exp" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                            <select name="rp_exp" required class="input-field w-full rounded-2xl p-5 outline-none cursor-pointer text-lg">
                                 <option value="" disabled selected>Select an option</option>
                                 <option value="Yes">Yes, I have experience</option>
                                 <option value="No">No, I am a beginner</option>
@@ -233,7 +230,7 @@
 
                         <div class="space-y-3">
                             <label class="block text-sm font-semibold text-gray-300 ml-1">1.14 Read the Skyline RP Rule Book? <span class="text-blue-500">*</span></label>
-                            <select name="rules_read" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                            <select name="rules_read" required class="input-field w-full rounded-2xl p-5 outline-none cursor-pointer text-lg">
                                 <option value="" disabled selected>Select an option</option>
                                 <option value="Yes">Yes, I have read everything</option>
                                 <option value="No">No, not yet</option>
@@ -242,7 +239,7 @@
 
                         <div class="space-y-3">
                             <label class="block text-sm font-semibold text-gray-300 ml-1">1.15 Agree to Server Guidelines? <span class="text-blue-500">*</span></label>
-                            <select name="agree" required class="input-field w-full rounded-2xl p-5 outline-none appearance-none cursor-pointer text-lg">
+                            <select name="agree" required class="input-field w-full rounded-2xl p-5 outline-none cursor-pointer text-lg">
                                 <option value="" disabled selected>Select an option</option>
                                 <option value="Yes">I Agree & Will Comply</option>
                                 <option value="No">I Do Not Agree</option>
@@ -259,8 +256,6 @@
                 </div>
             </form>
 
-            <div id="status" class="hidden mt-10 p-6 rounded-3xl text-center font-bold border animate-fade-in text-lg"></div>
-
             <footer class="mt-20 text-center border-t border-white/5 pt-10">
                 <p class="text-gray-500 text-sm tracking-widest font-medium uppercase">&copy; 2025 SKYLINE RP • Official Application Portal</p>
             </footer>
@@ -268,45 +263,90 @@
     </div>
 
     <script>
-        // backend URL configuration
-        const BACKEND_URL = 'https://bbf60a2f-e8d7-4698-80a2-8b80c51208a9-00-omlkgumudbwh.sisko.replit.dev/'; 
+        // Insert your Discord Webhook URL here
+        const WEBHOOK_URL = 'YOUR_DISCORD_WEBHOOK_URL_HERE'; 
 
-        document.getElementById('rpForm').addEventListener('submit', async (e) => {
+        const rpForm = document.getElementById('rpForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const status = document.getElementById('status');
+
+        rpForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
-            const status = document.getElementById('status');
-            const formData = new FormData(e.target);
             
-            btn.disabled = true;
-            btnText.innerText = 'PROCESSING...';
+            if (WEBHOOK_URL === 'YOUR_DISCORD_WEBHOOK_URL_HERE') {
+                showStatus("Error: Webhook URL is not configured!", "error");
+                return;
+            }
+
+            // Set Loading State
+            submitBtn.disabled = true;
+            btnText.innerText = 'SENDING...';
             status.classList.add('hidden');
 
+            const formData = new FormData(rpForm);
             const data = Object.fromEntries(formData.entries());
 
+            // Create Discord Embed Payload
+            const payload = {
+                username: "Skyline RP Whitelist Bot",
+                avatar_url: "https://media.discordapp.net/attachments/1442517496275009597/1454131605403603155/SOUTH_4.png",
+                embeds: [{
+                    title: "🚀 New Whitelist Application Received",
+                    color: 3447003, // Blue color
+                    timestamp: new Date().toISOString(),
+                    footer: { text: "Skyline RP Application System" },
+                    thumbnail: { url: "https://media.discordapp.net/attachments/1442517496275009597/1454131605403603155/SOUTH_4.png" },
+                    fields: [
+                        { name: "👤 Real Name", value: data.full_name, inline: true },
+                        { name: "📅 Date of Birth", value: data.dob, inline: true },
+                        { name: "🌍 Timezone", value: data.timezone, inline: true },
+                        { name: "📧 Email", value: data.email, inline: false },
+                        { name: "🎮 Steam Name", value: data.steam_name, inline: true },
+                        { name: "🆔 Steam Hex", value: `\`${data.steam_hex}\``, inline: true },
+                        { name: "🔗 Steam Profile", value: data.steam_link, inline: false },
+                        { name: "💬 Discord", value: `${data.discord_user} (ID: ${data.discord_id})`, inline: false },
+                        { name: "📱 Social Media", value: data.social_link || "Not provided", inline: false },
+                        { name: "🧠 Experience", value: data.rp_exp, inline: true },
+                        { name: "📜 Rules Read", value: data.rules_read, inline: true },
+                        { name: "✅ Agreement", value: data.agree, inline: true }
+                    ]
+                }]
+            };
+
             try {
-                const response = await fetch(BACKEND_URL + '/submit', {
+                const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
-                    status.innerText = "Application Received Successfully! Please check Discord for updates.";
-                    status.className = "mt-10 p-6 rounded-3xl text-green-400 bg-green-500/10 border-green-500/20 block animate-fade-in";
-                    e.target.reset();
+                    showStatus("✅ Application Submitted Successfully! Please check Discord for updates.", "success");
+                    rpForm.reset();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
-                    throw new Error("Submission failed");
+                    throw new Error("Failed to send to Discord");
                 }
             } catch (err) {
-                status.innerText = "Connection Error: Please check your internet or try again later.";
-                status.className = "mt-10 p-6 rounded-3xl text-red-400 bg-red-500/10 border-red-500/20 block animate-fade-in";
+                showStatus("❌ Failed to submit. Please check your internet or contact staff.", "error");
+                console.error(err);
             } finally {
-                btn.disabled = false;
+                submitBtn.disabled = false;
                 btnText.innerText = 'Submit Application';
             }
         });
+
+        function showStatus(message, type) {
+            status.innerText = message;
+            status.classList.remove('hidden', 'text-green-400', 'bg-green-500/10', 'border-green-500/20', 'text-red-400', 'bg-red-500/10', 'border-red-500/20');
+            
+            if (type === 'success') {
+                status.classList.add('text-green-400', 'bg-green-500/10', 'border-green-500/20', 'block');
+            } else {
+                status.classList.add('text-red-400', 'bg-red-500/10', 'border-red-500/20', 'block');
+            }
+        }
     </script>
 </body>
 </html>
